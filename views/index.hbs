@@ -1,13 +1,13 @@
 <section class="section">
   <div class="container">
-    <form method="POST" action="/getinfo">
+    <form method="POST" action="/getinfo" onsubmit="changeButton()">
       <div class="field is-grouped">
         <div class="control is-expanded">
           <input class="input is-medium" name="url" placeholder="URL to Download" />
           <p class="help"><a href="/extractors">* List of currently available services</a></p>
         </div>
         <div class="control">
-          <input class="button is-primary is-medium" type="submit" value="Submit" />
+          <button class="button is-primary is-medium" id="form-submit" type="submit">Submit</button>
         </div>
       </div>
     </form>
@@ -44,3 +44,12 @@
     </table>
   </div>
 </section>
+
+<script>
+  function changeButton() {
+    var ele = document.getElementById('form-submit');
+    if (ele) {
+      ele.classList.toggle('is-loading');
+    }
+  }
+</script>

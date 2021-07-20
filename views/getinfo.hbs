@@ -13,7 +13,7 @@
         </div>
 
         <div class="control">
-          <input class="button is-primary" type="submit" value="Queue Download" />
+          <button class="button is-primary" id="form-submit" type="submit">Queue Download</button>
         </div>
       </div>
       <input type="hidden" name="url" value="{{url}}" />
@@ -22,3 +22,12 @@
     </form>
   </div>
 </section>
+
+<script>
+  function changeButton() {
+    var ele = document.getElementById('form-submit');
+    if (ele) {
+      ele.classList.toggle('is-loading');
+    }
+  }
+</script>
