@@ -1,0 +1,45 @@
+<section class="section">
+  <div class="container">
+    <form method="POST" action="/getinfo">
+      <div class="field is-grouped">
+        <div class="control is-expanded">
+          <input class="input is-medium" name="url" placeholder="URL to Download" />
+        </div>
+        <div class="control">
+          <input class="button is-primary is-medium" type="submit" value="Submit" />
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-4 has-text-centered">Recent Downloads</h2>
+
+    <table class="table is-striped is-hoverable is-fullwidth is-narrow">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Status</th>
+          <th><abbr title="Service">Svc</abbr></th>
+          <th>Title</th>
+          <th><abbr title="Percent Downloaded">%</abbr></th>
+        </tr>
+      </thead>
+      {{#each jobs}}
+      <tr>
+        <td>{{id}}</td>
+        <td>{{capitalize state}}</td>
+        <td>{{capitalize data.extractor}}</td>
+        <td>
+          <a href="{{data.url}}" title="{{data.title}}" target="_blank" rel="noopener noreferrer">
+            {{data.title}}
+          </a>
+        </td>
+        <td>{{progress}}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+</section>
