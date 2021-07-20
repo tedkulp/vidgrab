@@ -1,0 +1,13 @@
+<section class="section">
+  <div class="container">
+    <div class="content">
+      <p>Here is the list of currently supported services. This is generated dynamically because youtube-dl adds new
+        services all the time.</p>
+      <ul>
+        {{#each extractors}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</section>

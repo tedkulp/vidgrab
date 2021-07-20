@@ -57,7 +57,16 @@ export class WebController {
         .slice(0, 10),
     };
   }
-  s;
+
+  @Get('/extractors')
+  @Render('extractors')
+  async listExtractors() {
+    const extractors = await this.ytdlService.listExtractors();
+
+    return {
+      extractors,
+    };
+  }
 
   @Post('/getinfo')
   @Render('getinfo')
