@@ -15,4 +15,12 @@ export class YtdlService {
       youtubeSkipDashManifest: true,
     });
   }
+
+  async listExtractors() {
+    const extractors = (await ytdl('', {
+      listExtractors: true,
+    })) as unknown;
+
+    return (extractors as string).split('\n');
+  }
 }
