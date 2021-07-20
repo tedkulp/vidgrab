@@ -8,6 +8,7 @@ import {
   Processor,
 } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Job } from 'bull';
 import { throttle } from 'lodash';
 import * as split from 'split2';
@@ -21,6 +22,8 @@ export class YtdlProcessor {
     job.progress(progress);
   }, 250);
 
+  constructor(private readonly configService: ConfigService) {}
+
   @Process('download')
   async handleDownload(job: Job<QueueDto>) {
     this.logger.debug('Start downloading...');
@@ -29,7 +32,9 @@ export class YtdlProcessor {
     try {
       const execaProcess = raw(job.data.url, {
         format: job.data.format,
-        output: '/tmp/%(title)s-%(format_id)s.%(ext)s',
+        output: `${this.configService.get(
+          'fileDir',
+        )}/%(title)s-%(format_id)s.%(ext)s`,
         newline: true,
       });
 
