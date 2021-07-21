@@ -3,8 +3,8 @@ export class UploadDto {
 }
 
 export class QueueDto {
-  format: number;
+  format? = 'best';
   url: string;
-  title: string;
-  extractor: string;
+  title?: string;
+  extractor?: string;
 }

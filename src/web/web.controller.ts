@@ -92,6 +92,12 @@ export class WebController {
   @Redirect('/')
   @UsePipes(new ValidationPipe({ transform: true }))
   async queue(@Body() body: QueueDto) {
+    if (!body.extractor || !body.title) {
+      const videoInfo = await this.ytdlService.getVideoInfo(body.url);
+      body.extractor = videoInfo.extractor;
+      body.title = videoInfo.title;
+    }
+
     const job = await this.vidgrabQueue.add('download', body);
 
     // Redirect to main page
