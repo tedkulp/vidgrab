@@ -1,0 +1,15 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    restart: unless-stopped
+  vidgrab:
+    image: tedkulp/vidgrab
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+      - FILE_DIR=/downloads
+    ports:
+      - 3000:3000
+    volumes:
+      -  ${PWD}/downloads:/downloads
