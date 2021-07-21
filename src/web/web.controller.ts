@@ -7,11 +7,12 @@ import {
   Post,
   Redirect,
   Render,
+  Req,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { Queue } from 'bull';
-import { pick } from 'lodash';
+import { pick, trimEnd } from 'lodash';
 import { YtdlService } from 'src/ytdl/ytdl.service';
 
 import { QueueDto, UploadDto } from '../types';
@@ -27,7 +28,14 @@ export class WebController {
 
   @Get()
   @Render('index')
-  async root() {
+  async root(@Req() request: any) {
+    const fullUrl =
+      request.protocol + '://' + request.get('host') + request.originalUrl;
+    const bookmarklet = `javascript:(function(){var xhr=new XMLHttpRequest();xhr.open('POST',encodeURI('${trimEnd(
+      fullUrl,
+      '/',
+    )}/queue'));xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.send('url='+document.location.href.replace(/\ /g,'+'));}());`;
+
     const jobs = await this.vidgrabQueue.getJobs([
       'completed',
       'waiting',
@@ -51,7 +59,7 @@ export class WebController {
     );
 
     return {
-      message: 'Hello world!',
+      bookmarklet,
       jobs: jobList
         .sort((a, b) => parseInt(b.id.toString()) - parseInt(a.id.toString()))
         .slice(0, 10),
@@ -100,7 +108,6 @@ export class WebController {
 
     const job = await this.vidgrabQueue.add('download', body);
 
-    // Redirect to main page
     return {
       jobId: job.id,
     };
