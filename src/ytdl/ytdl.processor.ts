@@ -11,7 +11,7 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Job } from 'bull';
 import { throttle } from 'lodash';
-import * as split from 'split2';
+import split from 'split2';
 import { QueueDto } from 'src/types';
 import { raw } from 'youtube-dl-exec';
 
@@ -38,16 +38,16 @@ export class YtdlProcessor {
         newline: true,
       });
 
-      execaProcess.stdout.pipe(split()).on('data', (line) => {
+      execaProcess.stdout?.pipe(split()).on('data', (line: string) => {
         this.logger.verbose(`youtube-dl stdout: ${line}`);
 
         const percentDone = line.match(/\[download\]\s+([0-9.]+)% of/);
         if (percentDone) {
-          this.setProgress(job, percentDone[1]);
+          this.setProgress(job, parseFloat(percentDone[1]));
         }
       });
 
-      execaProcess.stderr.pipe(split()).on('data', (line) => {
+      execaProcess.stderr?.pipe(split()).on('data', (line: any) => {
         this.logger.error(`youtube-dl stderr: ${line}`);
       });
 

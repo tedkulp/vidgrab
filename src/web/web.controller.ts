@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Logger,
   Post,
   Redirect,
@@ -27,7 +28,7 @@ export class WebController {
   ) {}
 
   @Get()
-  @Render('index')
+  @Render('Index')
   async root(@Req() request: any) {
     const fullUrl =
       request.protocol + '://' + request.get('host') + request.originalUrl;
@@ -51,7 +52,7 @@ export class WebController {
         const progress = j.progress();
 
         return {
-          ...j,
+          ...pick(j, ['id', 'name', 'data']),
           progress: progress ? `${progress}%` : 'n/a',
           state: state,
         };
@@ -60,14 +61,20 @@ export class WebController {
 
     return {
       bookmarklet,
-      jobs: jobList
-        .sort((a, b) => parseInt(b.id.toString()) - parseInt(a.id.toString()))
-        .slice(0, 10),
+      jobs: JSON.parse(
+        JSON.stringify(
+          jobList
+            .sort(
+              (a, b) => parseInt(b.id.toString()) - parseInt(a.id.toString()),
+            )
+            .slice(0, 10),
+        ),
+      ),
     };
   }
 
   @Get('/extractors')
-  @Render('extractors')
+  @Render('Extractors')
   async listExtractors() {
     const extractors = await this.ytdlService.listExtractors();
 
@@ -77,7 +84,8 @@ export class WebController {
   }
 
   @Post('/getinfo')
-  @Render('getinfo')
+  @Render('Getinfo')
+  @HttpCode(200)
   @UsePipes(new ValidationPipe({ transform: true }))
   async getInfo(@Body() body: UploadDto) {
     const videoInfo = await this.ytdlService.getVideoInfo(body.url);
@@ -86,7 +94,7 @@ export class WebController {
       title: videoInfo.title,
       extractor: videoInfo.extractor,
       description: videoInfo.description,
-      url: videoInfo.webpage_url,
+      videoUrl: videoInfo.webpage_url,
       thumbnails: videoInfo.thumbnails,
       upload_date: videoInfo.upload_date,
       duration: videoInfo.duration,
