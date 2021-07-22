@@ -1,10 +1,10 @@
 export class UploadDto {
-  url: string;
+  url = '';
 }
 
 export class QueueDto {
   format? = 'best';
-  url: string;
+  url = '';
   title?: string;
   extractor?: string;
 }
