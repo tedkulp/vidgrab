@@ -31,10 +31,12 @@ const Page: NextPage<PageProps> = ({ extractors }) => {
 };
 
 // assigning the initial props to the component's props
-Page.getInitialProps = async ({ query }: PageContext) => {
+export async function getServerSideProps({ query }: PageContext) {
   return {
-    extractors: query?.extractors,
+    props: {
+      extractors: query?.extractors,
+    },
   };
-};
+}
 
 export default Page;
