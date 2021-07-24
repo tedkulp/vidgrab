@@ -1,6 +1,8 @@
 import { NextPage, NextPageContext } from 'next';
 import Link from 'next/link';
 
+import Jobs from '../../src/react-components/Jobs';
+
 // The component's props type
 type PageProps = {
   bookmarklet?: string;
@@ -62,42 +64,7 @@ const Page: NextPage<PageProps> = ({ bookmarklet, jobs }) => {
         <div className="container">
           <h2 className="subtitle is-4 has-text-centered">Recent Downloads</h2>
 
-          <table className="table is-striped is-hoverable is-fullwidth is-narrow">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Status</th>
-                <th>
-                  <abbr title="Service">Svc</abbr>
-                </th>
-                <th>Title</th>
-                <th>
-                  <abbr title="Percent Downloaded">%</abbr>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {jobs &&
-                jobs.map((j) => (
-                  <tr key={j.id}>
-                    <td>{j.id}</td>
-                    <td>{j.state}</td>
-                    <td>{j.data.extractor}</td>
-                    <td>
-                      <a
-                        href={j.data.url}
-                        title={j.data.title}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {j.data.title}
-                      </a>
-                    </td>
-                    <td>{j.progress}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <Jobs jobs={jobs} />
         </div>
       </section>
     </>
