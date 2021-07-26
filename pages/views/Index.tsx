@@ -1,5 +1,7 @@
 import { NextPage, NextPageContext } from 'next';
 import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import Client from 'socket.io-client';
 
 import Jobs from '../../src/react-components/Jobs';
 
@@ -16,6 +18,39 @@ type PageContext = NextPageContext & {
 
 // react component
 const Page: NextPage<PageProps> = ({ bookmarklet, jobs }) => {
+  const [_socket, setSocket] = useState<any>();
+  const [currentJobs, setCurrentJobs] = useState<any>(jobs);
+
+  useEffect(() => {
+    const newSocket = Client();
+    setSocket(newSocket);
+
+    newSocket.on('job.added', (payload: any) => {
+      setCurrentJobs((current: any[]) => {
+        return [payload.job, ...current.slice(0, -1)];
+      });
+    });
+
+    newSocket.on('job.updated', (payload: any) => {
+      setCurrentJobs((current: { id: any }[]) => {
+        const foundIndex = current.findIndex(
+          (cj: { id: any }) => cj.id == payload.job.id,
+        );
+
+        if (foundIndex > -1) {
+          current[foundIndex] = payload.job;
+        }
+
+        return [...current];
+      });
+    });
+
+    return () => {
+      newSocket.disconnect();
+      setSocket(undefined);
+    };
+  }, []);
+
   return (
     <>
       <section className="section">
@@ -64,7 +99,7 @@ const Page: NextPage<PageProps> = ({ bookmarklet, jobs }) => {
         <div className="container">
           <h2 className="subtitle is-4 has-text-centered">Recent Downloads</h2>
 
-          <Jobs jobs={jobs} />
+          <Jobs jobs={currentJobs} />
         </div>
       </section>
     </>

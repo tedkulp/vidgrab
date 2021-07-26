@@ -9,6 +9,7 @@ import {
 } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Job } from 'bull';
 import { throttle } from 'lodash';
 import split from 'split2';
@@ -22,7 +23,10 @@ export class YtdlProcessor {
     job.progress(progress);
   }, 250);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   @Process('download')
   async handleDownload(job: Job<QueueDto>) {
@@ -66,6 +70,8 @@ export class YtdlProcessor {
         job.data,
       )}...`,
     );
+
+    this.eventEmitter.emit('job.updated', { job });
   }
 
   @OnQueueCompleted()
@@ -75,6 +81,8 @@ export class YtdlProcessor {
         job.data,
       )} and result ${result}...`,
     );
+
+    this.eventEmitter.emit('job.updated', { job });
   }
 
   @OnQueueFailed()
@@ -84,11 +92,15 @@ export class YtdlProcessor {
         job.data,
       )} and error ${err}...`,
     );
+
+    this.eventEmitter.emit('job.failed', { job, error: err });
   }
 
   @OnQueueError()
   onError(err: Error) {
     this.logger.error(`Error is ${err}...`);
+
+    this.eventEmitter.emit('job.error', { error: err });
   }
 
   @OnQueueProgress()
@@ -98,5 +110,7 @@ export class YtdlProcessor {
         job.data,
       )} and progress ${progress}...`,
     );
+
+    this.eventEmitter.emit('job.updated', { job });
   }
 }
