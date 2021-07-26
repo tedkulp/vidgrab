@@ -12,11 +12,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Queue } from 'bull';
 import { pick, trimEnd } from 'lodash';
-import { YtdlService } from 'src/ytdl/ytdl.service';
 
 import { QueueDto, UploadDto } from '../types';
+import { YtdlService } from '../ytdl/ytdl.service';
 
 @Controller()
 export class WebController {
@@ -25,6 +26,7 @@ export class WebController {
   constructor(
     @InjectQueue('vidgrab') private readonly vidgrabQueue: Queue,
     private readonly ytdlService: YtdlService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Get()
@@ -115,6 +117,8 @@ export class WebController {
     }
 
     const job = await this.vidgrabQueue.add('download', body);
+
+    this.eventEmitter.emit('job.added', { job });
 
     return {
       jobId: job.id,
