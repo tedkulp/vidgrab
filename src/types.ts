@@ -8,3 +8,8 @@ export class QueueDto {
   title?: string;
   extractor?: string;
 }
+
+export type JobEvent = {
+  job?: any;
+  err?: Error;
+};
