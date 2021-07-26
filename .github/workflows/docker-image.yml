@@ -25,6 +25,8 @@ jobs:
         with:
           push: true
           tags: tedkulp/vidgrab:latest
+          cache-from: type=registry,ref=tedkulp/vidgrab:latest
+          cache-to: type=inline
       -
         name: git checkout
         uses: actions/checkout@v2
