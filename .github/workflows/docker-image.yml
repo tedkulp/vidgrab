@@ -26,5 +26,13 @@ jobs:
           push: true
           tags: tedkulp/vidgrab:latest
       -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        name: push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
+        with:
+          destination_container_repo: tedkulp/vidgrab
+          provider: dockerhub
+          short_description: 'Simple web interface to download videos with youtube-dl and store them on your server'
+          readme_file: 'README.md'
