@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Job } from 'bull';
 import { throttle } from 'lodash';
-import split from 'split2';
+import * as split from 'split2';
 import { QueueDto } from '@vidgrab2/api-interfaces';
 import { raw } from 'youtube-dl-exec';
 

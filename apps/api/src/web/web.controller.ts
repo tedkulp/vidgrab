@@ -1,13 +1,15 @@
 import { InjectQueue } from '@nestjs/bull';
 import {
   Body,
+  CacheInterceptor,
+  CacheTTL,
   Controller,
   Get,
   HttpCode,
   Logger,
   Post,
-  Render,
   Req,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -28,8 +30,9 @@ export class WebController {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @Get()
-  @Render('Index')
+  @Get('/info')
+  // @Render('Index')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async root(@Req() request: any) {
     const fullUrl =
       request.protocol + '://' + request.get('host') + request.originalUrl;
@@ -75,6 +78,8 @@ export class WebController {
   }
 
   @Get('/extractors')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(600)
   async listExtractors() {
     const extractors = await this.ytdlService.listExtractors();
 

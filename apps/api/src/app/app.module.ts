@@ -5,17 +5,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bull';
 
+import configuration from '../config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WebModule } from '../web/web.module';
 import { YtdlModule } from '../ytdl/ytdl.module';
+import { JobGateway } from './job.gateway';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       ignoreEnvFile: true,
       isGlobal: true,
-      // load: [configuration],
+      load: [configuration],
     }),
     EventEmitterModule.forRoot({
       wildcard: true,
@@ -38,6 +40,6 @@ import { YtdlModule } from '../ytdl/ytdl.module';
     WebModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JobGateway],
 })
 export class AppModule {}

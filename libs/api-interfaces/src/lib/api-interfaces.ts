@@ -13,7 +13,8 @@ export interface QueueDto {
   extractor?: string;
 }
 
-export type JobEvent = {
-  job?: unknown;
+export interface JobEvent {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  job?: any;
   err?: Error;
 };

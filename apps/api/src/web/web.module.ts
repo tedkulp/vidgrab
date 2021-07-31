@@ -1,5 +1,5 @@
 import { BullModule } from '@nestjs/bull';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { YtdlModule } from '../ytdl/ytdl.module';
 
 import { WebController } from './web.controller';
@@ -9,6 +9,7 @@ import { WebController } from './web.controller';
     BullModule.registerQueue({
       name: 'vidgrab',
     }),
+    CacheModule.register(),
     YtdlModule,
   ],
   controllers: [WebController],
