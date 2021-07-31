@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#wrapper {
+  flex: 1;
+}
+
+#footer {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.bookmarklet {
+  border: 1px dashed black;
+  padding: 10px 20px 10px 20px;
+}
