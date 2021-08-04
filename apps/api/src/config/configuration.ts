@@ -4,4 +4,5 @@ export default () => ({
     ? parseInt(process.env.REDIS_PORT, 10)
     : 6379,
   fileDir: process.env.FILE_DIR || '/tmp',
+  siteUrl: process.env.SITE_URL || 'http://localhost:4200',
 });

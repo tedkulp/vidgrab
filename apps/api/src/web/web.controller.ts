@@ -14,6 +14,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ConfigService } from '@nestjs/config';
 import { Queue } from 'bull';
 import { pick, trimEnd } from 'lodash';
 
@@ -28,18 +29,19 @@ export class WebController {
     @InjectQueue('vidgrab') private readonly vidgrabQueue: Queue,
     private readonly ytdlService: YtdlService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly configService: ConfigService,
   ) {}
 
   @Get('/info')
   // @Render('Index')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async root(@Req() request: any) {
-    const fullUrl =
+    const fullUrl = this.configService.get('siteUrl') ||
       request.protocol + '://' + request.get('host') + request.originalUrl;
     const bookmarklet = `javascript:(function(){var xhr=new XMLHttpRequest();xhr.open('POST',encodeURI('${trimEnd(
       fullUrl,
       '/',
-    )}/queue'));xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.send('url='+document.location.href.replace(/ /g,'+'));}());`;
+    )}'));xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.send('url='+document.location.href.replace(/ /g,'+'));}());`;
 
     const jobs = await this.vidgrabQueue.getJobs([
       'completed',

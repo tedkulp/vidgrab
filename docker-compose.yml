@@ -1,0 +1,19 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+  vidgrab:
+    # image: tedkulp/vidgrab
+    build: .
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+      - FILE_DIR=/downloads
+      - SITE_URL=http://localhost:4200
+    ports:
+      - 4200:4200
+    volumes:
+      - ${PWD}/downloads:/downloads
