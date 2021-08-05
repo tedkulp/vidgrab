@@ -1,5 +1,5 @@
 {
-  "name": "vidgrab2",
+  "name": "vidgrab",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -10,7 +10,7 @@
     "start:fe:prod": "sleep 10 && ng serve client --prod",
     "start:be": "ng serve api",
     "start:be:prod": "node dist/apps/api/main.js",
-    "build": "ng build api --prod && ng build client",
+    "build": "ng build api --configuration production && ng build client",
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",
     "dev": "concurrently -p=\"{name}\" -n=\"Next,NestJS\" -c=\"green,blue\" \"npm run start:fe\" \"npm run start:be\"",

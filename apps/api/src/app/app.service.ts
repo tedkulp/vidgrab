@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from '@vidgrab2/api-interfaces';
+import { Message } from '@vidgrab/api-interfaces';
 
 @Injectable()
 export class AppService {

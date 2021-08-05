@@ -18,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
 import { Queue } from 'bull';
 import { pick, trimEnd } from 'lodash';
 
-import { QueueDto, UploadDto } from '@vidgrab2/api-interfaces';
+import { QueueDto, UploadDto } from '@vidgrab/api-interfaces';
 import { YtdlService } from '../ytdl/ytdl.service';
 
 @Controller()

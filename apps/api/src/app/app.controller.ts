@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { Message } from '@vidgrab2/api-interfaces';
+import { Message } from '@vidgrab/api-interfaces';
 
 import { AppService } from './app.service';
 

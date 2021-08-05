@@ -9,7 +9,7 @@ import {
 import { pick } from 'lodash';
 import { Server, Socket } from 'socket.io';
 
-import { JobEvent } from '@vidgrab2/api-interfaces';
+import { JobEvent } from '@vidgrab/api-interfaces';
 
 @WebSocketGateway()
 export class JobGateway implements OnGatewayConnection, OnGatewayDisconnect {

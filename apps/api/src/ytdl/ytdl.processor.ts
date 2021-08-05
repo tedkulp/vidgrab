@@ -13,7 +13,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Job } from 'bull';
 import { throttle } from 'lodash';
 import * as split from 'split2';
-import { QueueDto } from '@vidgrab2/api-interfaces';
+import { QueueDto } from '@vidgrab/api-interfaces';
 import { raw } from 'youtube-dl-exec';
 
 @Processor('vidgrab')
