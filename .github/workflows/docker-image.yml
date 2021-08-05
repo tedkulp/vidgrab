@@ -53,7 +53,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ steps.prep.outputs.tags }}
-          platforms: linux/amd64,linux/arm64,linux/ppc64le
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le
           cache-from: type=registry,ref=tedkulp/vidgrab:latest
           cache-to: type=inline
       - name: git checkout
