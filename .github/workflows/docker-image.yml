@@ -8,8 +8,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - name: Prepare
         id: prep
